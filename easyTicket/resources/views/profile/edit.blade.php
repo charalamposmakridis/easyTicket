@@ -3,7 +3,7 @@
 @section('content')
     <h1>Profile Settings</h1>
 
-    <!-- Ενημέρωση Στοιχείων Προφίλ -->
+
     <section>
         <h2>Update Profile Information</h2>
         <form method="POST" action="{{ route('profile.update') }}">
@@ -32,7 +32,6 @@
 
     <hr>
 
-    <!-- Αλλαγή Κωδικού Πρόσβασης -->
     <section>
         <h2>Update Password</h2>
         <form method="POST" action="{{ route('password.update') }}">
