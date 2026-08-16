@@ -19,7 +19,7 @@ class TicketController extends Controller
             $tickets = Ticket::with(['categories', 'agent'])
                 ->where('user_id', $user->id)
                 ->latest()
-                ->paginate(10); // 10 tickets ανά σελίδα
+                ->paginate(10);
         } else {
             $tickets = Ticket::with(['user', 'categories', 'agent'])
                 ->latest()
@@ -54,14 +54,12 @@ class TicketController extends Controller
 
     public function show(Ticket $ticket)
     {
-        // Έλεγχος πρόσβασης για clients
         if (auth()->user()->isClient() && $ticket->user_id !== auth()->id()) {
             abort(403, 'Unauthorized access.');
         }
 
         $ticket->load(['user', 'categories', 'agent']);
 
-        // Λίστα χρηστών που είναι Agents ή Admins για το dropdown ανάθεσης
         $agents = User::whereIn('role', ['agent', 'admin'])->get();
 
         return view('tickets.show', compact('ticket', 'agents'));
@@ -89,7 +87,6 @@ class TicketController extends Controller
             'priority'    => $request->priority,
         ];
 
-        // Μόνο Agents/Admins μπορούν να ενημερώσουν το status από τη φόρμα edit
         if (!auth()->user()->isClient() && $request->has('status')) {
             $data['status'] = $request->status;
         }
